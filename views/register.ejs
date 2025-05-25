@@ -1,0 +1,66 @@
+<%- include('layout/header', { title: 'Register', bodyClass: 'register-body' }) %>
+    <div class="register-container">
+        <h2>Register</h2>
+        <form id="registerForm" action="/auth/register" method="POST">
+            <label for="nama">Nama</label>
+            <input type="text" id="nama" name="nama" required>
+
+            <label for="alamat">Alamat</label>
+            <input type="text" id="alamat" name="alamat" required>
+
+            <label for="telepon">Telepon</label>
+            <input type="telepon" id="telepon" name="telepon" required>
+
+            <label for="reg-username">Username</label>
+            <input type="text" id="reg-username" name="username" required>
+
+            <label for="reg-password">Password</label>
+            <input type="password" id="reg-password" name="password" required>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            try {
+                const response = await fetch('/auth/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nama: document.getElementById('nama').value,
+                        alamat: document.getElementById('alamat').value,
+                        telepon: document.getElementById('telepon').value,
+                        username: document.getElementById('reg-username').value,
+                        password: document.getElementById('reg-password').value
+                    })
+                });
+
+                if (response.ok) {
+                    Swal.fire({
+                        title: 'Registrasi Berhasil!',
+                        text: 'Silahkan login dengan akun Anda',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = '/auth/login';
+                    });
+                } else {
+                    const error = await response.text();
+                    showError(error || 'Gagal melakukan registrasi');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Terjadi kesalahan saat registrasi');
+            }
+        });
+    </script>
+</body>
+</html>
+
+

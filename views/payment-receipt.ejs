@@ -1,0 +1,249 @@
+<%- include('layout/header', { title: 'Bukti Pembayaran', bodyClass: 'payment-receipt-body' }) %>
+<div class="receipt-container">
+    <div class="receipt-header">
+        <div class="store-info">
+            <i data-lucide="shopping-bag" class="store-icon"></i>
+            <h1>KasirKita</h1>
+        </div>
+        <div class="receipt-status">
+            <i data-lucide="check-circle" class="success-icon"></i>
+            <h2>Pembayaran Berhasil</h2>
+        </div>
+    </div>
+
+    <div class="receipt-details">
+        <div class="detail-row">
+            <span><i data-lucide="receipt" class="icon"></i> No. Transaksi</span>
+            <strong>#<%= orderId %></strong>
+        </div>
+        <div class="detail-row">
+            <span><i data-lucide="calendar" class="icon"></i> Tanggal</span>
+            <strong><%= new Date().toLocaleDateString('id-ID', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }) %></strong>
+        </div>
+        <div class="detail-row">
+            <span><i data-lucide="user" class="icon"></i> Pelanggan</span>
+            <strong><%= pelanggan.namaPelanggan %></strong>
+        </div>
+    </div>
+
+    <div class="items-list">
+        <h3><i data-lucide="shopping-cart" class="icon"></i> Detail Pembelian</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Produk</th>
+                    <th>Harga</th>
+                    <th>Jumlah</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% items.forEach(item => { %>
+                    <tr>
+                        <td><%= item.produk_id.namaProduk %></td>
+                        <td>Rp <%= item.produk_id.harga.toLocaleString() %></td>
+                        <td><%= item.jumlah %></td>
+                        <td>Rp <%= (item.produk_id.harga * item.jumlah).toLocaleString() %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3">Total Pembayaran</td>
+                    <td>Rp <%= totalHarga.toLocaleString() %></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="receipt-footer">
+        <p><i data-lucide="info" class="icon"></i> Simpan bukti pembayaran ini sebagai referensi</p>
+        <div class="receipt-actions">
+            <button onclick="window.print()" class="btn-print">
+                <i data-lucide="printer" class="icon"></i> Cetak
+            </button>
+            <a href="/produk/pelanggan" class="btn-shop">
+                <i data-lucide="shopping-bag" class="icon"></i> Belanja Lagi
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .receipt-container {
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    .receipt-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px dashed #eee;
+    }
+
+    .store-info {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .store-icon {
+        width: 32px;
+        height: 32px;
+        color: #3085d6;
+    }
+
+    .receipt-status {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .success-icon {
+        width: 24px;
+        height: 24px;
+        color: #28a745;
+    }
+
+    .receipt-details {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
+    .detail-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .detail-row span {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #666;
+    }
+
+    .icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .items-list {
+        margin-bottom: 2rem;
+    }
+
+    .items-list h3 {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+    }
+
+    thead th {
+        background: #f8f9fa;
+        font-weight: 600;
+    }
+
+    tfoot tr {
+        font-weight: bold;
+        background: #f8f9fa;
+    }
+
+    .receipt-footer {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 1rem;
+        border-top: 2px dashed #eee;
+    }
+
+    .receipt-footer p {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        color: #666;
+        margin-bottom: 1rem;
+    }
+
+    .receipt-actions {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .btn-print, .btn-shop {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: 500;
+        text-decoration: none;
+    }
+
+    .btn-print {
+        background: #3085d6;
+        color: white;
+    }
+
+    .btn-shop {
+        background: #28a745;
+        color: white;
+    }
+
+    @media print {
+        body {
+            background: white;
+        }
+        .receipt-container {
+            box-shadow: none;
+            margin: 0;
+            padding: 1rem;
+        }
+        .receipt-actions {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+</script>
+</body>
+</html> 

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Produk</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="daftar-produk-body">
+    <%- include('layout/header', { title: 'Daftar Produk', bodyClass: 'daftar-produk-body' }) %>
+    <%- include('layout/sidebar') %>
+    <h1>Daftar Barang</h1>
+    <div class="cart-container">
+        <% produkList.forEach(produk => { %>
+            <div class="cart-item">
+                <img src="/image/<%= produk.foto %>" alt="Foto Produk" width="100">
+                <div class="cart-item-info">
+                    <p><strong>Nama Produk :</strong> <%= produk.namaProduk %></p>
+                    <p>
+                        <strong>Kategori :</strong> 
+                        <span class="kategori-badge kategori-<%= produk.kategori %>">
+                            <%= produk.kategori %>
+                        </span>
+                    </p>
+                    <p><strong>Harga :</strong> Rp <%= produk.harga.toLocaleString() %></p>
+                    <p><strong>Stok :</strong> <%= produk.stok %></p>
+                    <p><strong>Deskripsi :</strong> <%= produk.deskripsi %></p>
+                </div>
+                <div class="cart-item-actions">
+                    <button onclick="tambahKeKeranjang('<%= produk._id %>')" class="btn-cart">Tambah ke Keranjang</button>
+                </div>
+            </div>
+        <% }); %>
+    </div>
+
+    <script>
+        async function tambahKeKeranjang(produkId) {
+            try {
+                const response = await fetch(`/keranjang/add/${produkId}`, {
+                    method: 'POST'
+                });
+
+                if (response.ok) {
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        text: 'Produk berhasil ditambahkan ke keranjang',
+                        icon: 'success',
+                        showCancelButton: true,
+                        confirmButtonText: 'Lihat Keranjang',
+                        cancelButtonText: 'Lanjut Belanja'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/keranjang';
+                        }
+                    });
+                } else {
+                    const error = await response.text();
+                    showError(error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Terjadi kesalahan saat menambahkan ke keranjang');
+            }
+        }
+    </script>
+</body>
+</html>

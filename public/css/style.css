@@ -1,0 +1,484 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+.login-body, .register-body, .edit-produk-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+input {
+    width: 100%;
+    height: 50px;
+    padding: 8px;
+    margin:8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button, .btn {
+    display: block;
+    width: 100%;
+    height: 50px;
+    padding: 8px;
+    margin-top : 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+button:hover, .btn:hover {
+    background-color: #0056b3;
+}
+
+.register-container, .login-container, .tambah-produk-container, .edit-produk-container{
+    width: 1000px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: white;
+}
+
+.login-container a {
+    color: #007bff;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
+}
+
+.daftar-produk-body {
+    height: 100vh;
+    background: #f4f4f4;
+    padding-left: 260px;
+}
+
+.cart-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    z-index: 500;
+    justify-content: flex-start;
+    transform: translateY(-2px);
+    
+}
+
+.cart-item {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-between;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 250px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.cart-item:hover {
+    transform: scale(1.02);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.cart-item-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    text-align: start;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    height: 100vh;
+    background-color: #333;
+    padding-top: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+}
+.sidebar h1 {
+    color: white;
+    text-align: center;
+}
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+}
+.sidebar nav ul li {
+    padding: 5px;
+    text-align: left;
+}
+.sidebar nav ul li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+}
+.sidebar nav ul li a:hover {
+    background-color: #575757;
+}
+.logout-form {
+    margin-top: auto;
+    padding: 10px;
+}
+
+.tambah-produk-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f4f4f4;
+    padding-left: 260px;
+}
+
+/* Style untuk dropdown kategori */
+select#kategori {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+select#kategori:hover {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+select#kategori:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+}
+
+/* Style untuk tampilan kategori di daftar produk */
+    .cart-item-info p strong {
+        color: #333;
+        font-weight: 600;
+    }
+
+
+    .cart-item-info p {
+        margin: 5px 0;
+        line-height: 1.4;
+    }
+
+    /* Badge kategori */
+    .kategori-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        margin: 5px 0;
+        color: white;
+    }
+
+    /* Warna berbeda untuk setiap kategori */
+    .kategori-Elektronik {
+        background-color: #2196F3;
+    }
+
+    .kategori-Pakaian {
+        background-color: #9C27B0;
+    }
+
+    .kategori-Makanan {
+        background-color: #FF9800;
+    }
+
+    .kategori-Minuman {
+        background-color: #4CAF50;
+    }
+
+    .kategori-Lainnya {
+        background-color: #607D8B;
+    }
+
+/* Hover effect untuk dropdown options */
+select#kategori option {
+    padding: 10px;
+    background-color: white;
+    color: #333;
+}
+
+select#kategori option:hover {
+    background-color: #f5f5f5;
+}
+
+/* Style untuk container form */
+.tambah-produk-container,
+.edit-produk-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Style untuk label */
+label {
+    display: block;
+    margin: 10px 0 5px;
+    color: #333;
+    font-weight: 500;
+}
+
+/* Style untuk input dan textarea */
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+    outline: none;
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+}
+
+/* Style untuk button */
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #007bff;
+}
+
+/* Style untuk file input */
+input[type="file"] {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px dashed #ddd;
+    border-radius: 4px;
+    width: 100%;
+    cursor: pointer;
+}
+
+input[type="file"]:hover {
+    border-color: #4CAF50;
+}
+
+/* Style untuk tombol Tambah ke Keranjang agar seperti tombol utama */
+.btn-cart {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+.btn-cart:hover {
+    background-color: #0056b3;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+
+}
+
+/* Style untuk tabel penjualan */
+.penjualan-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.penjualan-table th,
+.penjualan-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.penjualan-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.penjualan-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+.daftar-penjualan-body {
+    min-height: 100vh;
+    background: #f4f4f4;
+    padding: 20px;
+    padding-left: 270px;
+}
+
+.content-container {
+    padding: 20px;
+}
+
+.content-container h1 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Style untuk tombol batal di tabel penjualan */
+.btn-batal {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.btn-batal:hover {
+    background-color: #c82333;
+}
+
+/* Style untuk keranjang */
+.keranjang-body {
+    min-height: 100vh;
+    background: #f4f4f4;
+    padding: 20px;
+    padding-left: 270px;
+}
+
+.keranjang-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.keranjang-table th,
+.keranjang-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.keranjang-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #333;
+}
+
+.keranjang-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+.jumlah-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.jumlah-control button {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.jumlah-control button:hover:not(:disabled) {
+    background: #f0f0f0;
+}
+
+.jumlah-control button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-hapus {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-hapus:hover {
+    background-color: #c82333;
+}
+
+.empty-cart {
+    text-align: center;
+    padding: 20px;
+    font-size: 18px;
+    color: #666;
+}
+
+.checkout-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.btn-checkout {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-checkout:hover {
+    background-color: #218838;
+}
+
+.text-right {
+    text-align: right;
+}

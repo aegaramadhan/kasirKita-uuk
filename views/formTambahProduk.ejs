@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Produk</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="tambah-produk-body">
+    <%- include('layout/header', { title: 'Tambah Produk', bodyClass: 'tambah-produk-body' }) %>
+    <%- include('layout/sidebar') %>
+    <div class="content-container">
+        <h2><i data-lucide="plus-circle"></i> Tambah Produk</h2>
+        <div class="tambah-produk-container">
+            <form action="/produk/tambah" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="namaProduk">
+                        <i data-lucide="tag"></i> Nama Produk
+                    </label>
+                    <input type="text" id="namaProduk" name="namaProduk" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="kategori">
+                        <i data-lucide="bookmark"></i> Kategori
+                    </label>
+                    <select id="kategori" name="kategori" required>
+                        <option value="">Pilih Kategori</option>
+                        <option value="Elektronik">Elektronik</option>
+                        <option value="Pakaian">Pakaian</option>
+                        <option value="Makanan">Makanan</option>
+                        <option value="Minuman">Minuman</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="harga">
+                        <i data-lucide="dollar-sign"></i> Harga
+                    </label>
+                    <input type="number" id="harga" name="harga" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="stok">
+                        <i data-lucide="package"></i> Stok
+                    </label>
+                    <input type="number" id="stok" name="stok" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="deskripsi">
+                        <i data-lucide="file-text"></i> Deskripsi
+                    </label>
+                    <textarea id="deskripsi" name="deskripsi" rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="foto">
+                        <i data-lucide="image"></i> Foto
+                    </label>
+                    <input type="file" id="foto" name="foto" required>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i data-lucide="save"></i> Tambahkan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <style>
+        .content-container {
+            padding: 1rem;
+            height: calc(100vh - 60px); /* Adjust for header height */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-container h2 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .tambah-produk-body {
+            height: auto;
+        }
+
+        .tambah-produk-container {
+            max-width: 600px;
+            background: white;
+            padding: 1.25rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 0.75rem;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.25rem;
+            color: #2c3e50;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group i {
+            width: 16px;
+            height: 16px;
+            color: #666;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.4rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        textarea {
+            height: 60px;
+            resize: none;
+        }
+
+        input[type="file"] {
+            padding: 0.25rem 0;
+        }
+
+        select {
+            background-color: white;
+        }
+
+        .btn-submit {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.6rem;
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 0.75rem;
+        }
+
+        .btn-submit:hover {
+            background: #27ae60;
+        }
+
+        .btn-submit i {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>

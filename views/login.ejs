@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="login-body">
+    <%- include('layout/header', { title: 'Login', bodyClass: 'login-body' }) %>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm" action="/auth/login" method="POST">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <a href="/auth/register">Register</a>
+
+            <button type="submit">Masuk</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            try {
+                const response = await fetch('/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: document.getElementById('username').value,
+                        password: document.getElementById('password').value
+                    })
+                });
+
+                if (response.redirected) {
+                    // Ikuti redirect dari server
+                    window.location.href = response.url;
+                } else if (response.ok) {
+                    // Fallback jika tidak ada redirect
+                    window.location.reload();
+                } else {
+                    const error = await response.text();
+                    showError(error || 'Username atau password salah');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Terjadi kesalahan saat login');
+            }
+        });
+    </script>
+</body>
+</html>

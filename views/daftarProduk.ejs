@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Barang</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="daftar-produk-body">
+    <%- include('layout/header', { title: 'Daftar Produk', bodyClass: 'daftar-produk-body' }) %>
+    <%- include('layout/sidebar') %>
+    <div class="content-container">
+        <h1><i data-lucide="package"></i> Daftar Barang</h1>
+        <div class="cart-container">
+            <% produkList.forEach(produk => { %>
+                <div class="cart-item">
+                    <img src="/image/<%= produk.foto %>" alt="Foto Produk" width="100">
+                    <div class="cart-item-info">
+                        <p><strong><i data-lucide="tag"></i> Nama Produk :</strong> <%= produk.namaProduk %></p>
+                        <p>
+                            <strong><i data-lucide="bookmark"></i> Kategori :</strong> 
+                            <span class="kategori-badge kategori-<%= produk.kategori %>">
+                                <%= produk.kategori %>
+                            </span>
+                        </p>
+                        <p><strong><i data-lucide="dollar-sign"></i> Harga :</strong> Rp <%= produk.harga.toLocaleString() %></p>
+                        <p><strong><i data-lucide="package"></i> Stok :</strong> <%= produk.stok %></p>
+                        <p><strong><i data-lucide="file-text"></i> Deskripsi :</strong> <%= produk.deskripsi %></p>
+                    </div>
+                    <div class="cart-item-actions">
+                        <a href="/produk/edit/<%= produk._id %>" class="btn btn-primary">
+                            <i data-lucide="edit"></i> Update
+                        </a>
+                        <button onclick="hapusProduk('<%= produk._id %>')" class="btn btn-danger">
+                            <i data-lucide="trash-2"></i> Hapus
+                        </button>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+
+    <style>
+        .content-container h1 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .cart-item-info p {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .cart-item-info i {
+            width: 18px;
+            height: 18px;
+            color: #666;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        .btn i {
+            width: 16px;
+            height: 16px;
+        }
+
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+    </style>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        async function hapusProduk(id) {
+            const result = await showConfirmation(
+                'Hapus Produk',
+                'Apakah Anda yakin ingin menghapus produk ini?'
+            );
+
+            if (result.isConfirmed) {
+                window.location.href = `/produk/delete/${id}`;
+            }
+        }
+    </script>
+</body>
+</html>

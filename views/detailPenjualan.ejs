@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Penjualan</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="detail-penjualan-body">
+    <%- include('layout/header', { title: 'Detail Penjualan', bodyClass: 'detail-penjualan-body' }) %>
+    <%- include('layout/sidebar') %>
+    
+    <main class="main-content">
+        <div class="content-container">
+            <div class="detail-card">
+                <div class="card-header">
+                    <h1><i data-lucide="clipboard-list"></i> Detail Penjualan</h1>
+                    <div class="action-buttons">
+                        <button onclick="window.print()" class="btn-print">
+                            <i data-lucide="printer"></i> Cetak
+                        </button>
+                        <a href="/penjualan" class="btn-back">
+                            <i data-lucide="arrow-left"></i> Kembali
+                        </a>
+                    </div>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i data-lucide="hash"></i>
+                            <span>ID Penjualan</span>
+                        </div>
+                        <div class="info-value"><%= penjualan._id %></div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i data-lucide="calendar"></i>
+                            <span>Tanggal</span>
+                        </div>
+                        <div class="info-value">
+                            <%= new Date(penjualan.tanggalPenjualan).toLocaleDateString('id-ID', { 
+                                weekday: 'long',
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                            }) %>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i data-lucide="clock"></i>
+                            <span>Waktu</span>
+                        </div>
+                        <div class="info-value">
+                            <%= new Date(penjualan.tanggalPenjualan).toLocaleTimeString('id-ID', {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            }) %>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-label">
+                            <i data-lucide="user"></i>
+                            <span>Pelanggan</span>
+                        </div>
+                        <div class="info-value"><%= penjualan.pelanggan_id.namaPelanggan %></div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="detail-table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>ID Produk</th>
+                                <th>Nama Produk</th>
+                                <th>Harga Satuan</th>
+                                <th>Jumlah</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% penjualan.items.forEach((item, index) => { %>
+                                <tr>
+                                    <td class="text-center"><%= index + 1 %></td>
+                                    <td class="text-monospace"><%= item.produk_id._id %></td>
+                                    <td><%= item.produk_id.namaProduk %></td>
+                                    <td class="text-right">Rp <%= item.harga.toLocaleString('id-ID') %></td>
+                                    <td class="text-center"><%= item.jumlah %></td>
+                                    <td class="text-right">Rp <%= item.total.toLocaleString('id-ID') %></td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" class="total-label">Total Penjualan</td>
+                                <td class="total-value">Rp <%= penjualan.totalHarga.toLocaleString('id-ID') %></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .main-content {
+            margin-left: 250px; /* Sidebar width */
+            padding: 2rem;
+            min-height: 100vh;
+            background: #f8fafc;
+        }
+
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: transparent;
+        }
+
+        .detail-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            margin: 0 1rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: #fff;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .card-header h1 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #1a202c;
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .card-header h1 i {
+            width: 32px;
+            height: 32px;
+            color: #3182ce;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            padding: 2rem;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .info-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #64748b;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .info-label i {
+            width: 18px;
+            height: 18px;
+            color: #3182ce;
+        }
+
+        .info-value {
+            color: #1a202c;
+            font-size: 1.125rem;
+            font-weight: 500;
+            padding-left: 1.75rem;
+        }
+
+        .table-container {
+            padding: 1.5rem 2rem;
+            overflow-x: auto;
+        }
+
+        .detail-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 0.5rem;
+        }
+
+        .detail-table th {
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 1.25rem 1rem;
+            text-align: left;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .detail-table td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            color: #1a202c;
+            font-size: 0.9375rem;
+        }
+
+        .detail-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .text-monospace {
+            font-family: 'Consolas', monospace;
+            font-size: 0.8125rem;
+            color: #64748b;
+        }
+
+        .total-label {
+            text-align: right;
+            font-weight: 600;
+            color: #1a202c;
+            font-size: 1.125rem;
+            padding: 1.25rem 1rem;
+            background: #f8fafc;
+        }
+
+        .total-value {
+            text-align: right;
+            font-weight: 600;
+            color: #1a202c;
+            font-size: 1.125rem;
+            padding: 1.25rem 1rem;
+            background: #f8fafc;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-print, .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-print {
+            background: #3182ce;
+            color: white;
+        }
+
+        .btn-back {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-print:hover {
+            background: #2c5282;
+            transform: translateY(-1px);
+        }
+
+        .btn-back:hover {
+            background: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        .btn-print i, .btn-back i {
+            width: 16px;
+            height: 16px;
+        }
+
+        @media print {
+            .sidebar, .header, .action-buttons {
+                display: none !important;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 0;
+            }
+
+            .content-container {
+                padding: 0;
+                background: white;
+            }
+
+            .detail-card {
+                box-shadow: none;
+                margin: 0;
+            }
+
+            .info-grid {
+                background: white;
+            }
+
+            .detail-table th {
+                background: white;
+                border-bottom: 1px solid #000;
+            }
+
+            .total-label, .total-value {
+                background: white;
+                border-top: 2px solid #000;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+
+            .detail-card {
+                margin: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .card-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+                padding: 1.25rem;
+            }
+
+            .card-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .card-header h1 i {
+                width: 28px;
+                height: 28px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                padding: 1.25rem;
+            }
+
+            .table-container {
+                padding: 1.25rem;
+            }
+
+            .detail-table {
+                min-width: 800px;
+            }
+
+            .action-buttons {
+                width: 100%;
+            }
+
+            .btn-print, .btn-back {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+    </style>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html> 

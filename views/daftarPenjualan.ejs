@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Penjualan</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="daftar-penjualan-body">
+    <%- include('layout/header', { title: 'Daftar Penjualan', bodyClass: 'daftar-penjualan-body' }) %>
+    <%- include('layout/sidebar') %>
+    
+    <div class="main-wrapper">
+        <div class="main-content">
+            <div class="content-container">
+                <div class="page-header">
+                    <h1><i data-lucide="clipboard-list"></i> Laporan Penjualan</h1>
+                    <div class="action-buttons">
+                        <a href="/laporan/pdf" class="btn-generate <%= penjualan.length === 0 ? 'disabled' : '' %>" <%= penjualan.length === 0 ? 'onclick="return false"' : '' %>>
+                            <i data-lucide="file-text"></i> Generate PDF
+                        </a>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <% if (penjualan.length === 0) { %>
+                        <div class="no-data">
+                            <i data-lucide="inbox" class="no-data-icon"></i>
+                            <p>Tidak ada data penjualan</p>
+                        </div>
+                    <% } else { %>
+                        <table class="penjualan-table">
+                            <thead>
+                                <tr>
+                                    <th><i data-lucide="hash"></i> No</th>
+                                    <th><i data-lucide="user"></i> Nama Pelanggan</th>
+                                    <th><i data-lucide="calendar"></i> Tanggal</th>
+                                    <th><i data-lucide="package"></i> Jumlah Item</th>
+                                    <th><i data-lucide="credit-card"></i> Total Pembelian</th>
+                                    <th><i data-lucide="settings"></i> Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% penjualan.forEach((transaksi, index) => { %>
+                                    <tr>
+                                        <td class="text-center"><%= index + 1 %></td>
+                                        <td><%= transaksi.pelanggan_id ? transaksi.pelanggan_id.namaPelanggan : '-' %></td>
+                                        <td><%= transaksi.tanggalPenjualan ? new Date(transaksi.tanggalPenjualan).toLocaleDateString('id-ID', {
+                                            day: 'numeric',
+                                            month: 'long',
+                                            year: 'numeric'
+                                        }) : '-' %></td>
+                                        <td class="text-center"><%= transaksi.items.length %> item</td>
+                                        <td class="text-right">Rp <%= transaksi.totalHarga.toLocaleString('id-ID') %></td>
+                                        <td>
+                                            <a href="/penjualan/detail/<%= transaksi._id %>" class="btn-detail">
+                                                <i data-lucide="eye"></i> Lihat Detail
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .main-wrapper {
+            padding-left: 250px; /* Sidebar width */
+            min-height: 100vh;
+            background: #f8fafc;
+        }
+
+        .main-content {
+            width: 100%;
+            padding-right: 250px;
+            padding-top: 100px;
+        }
+
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .page-header h1 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #1a202c;
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        .page-header h1 i {
+            width: 32px;
+            height: 32px;
+            color: #3182ce;
+        }
+
+        .table-container {
+            padding: 1.5rem 2rem;
+            overflow-x: auto;
+        }
+
+        .no-data {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            color: #64748b;
+        }
+
+        .no-data-icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1.5rem;
+            color: inherit;
+        }
+
+        .no-data p {
+            font-size: 1.25rem;
+            margin: 0;
+        }
+
+        .penjualan-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .penjualan-table th {
+            background: #f1f5f9;
+            padding: 1.25rem 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #475569;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .penjualan-table th i {
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+
+        .penjualan-table td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            color: #1a202c;
+            font-size: 0.9375rem;
+        }
+
+        .penjualan-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+
+        .btn-generate, .btn-detail {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-generate {
+            background: #3182ce;
+            color: white;
+        }
+
+        .btn-generate:hover {
+            background: #2c5282;
+            transform: translateY(-1px);
+        }
+
+        .btn-generate.disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .btn-detail {
+            background: #e2e8f0;
+            color: #475569;
+            padding: 0.625rem 1rem;
+            font-size: 0.8125rem;
+        }
+
+        .btn-detail:hover {
+            background: #cbd5e1;
+            transform: translateY(-1px);
+        }
+
+        .btn-generate i, .btn-detail i {
+            width: 16px;
+            height: 16px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-wrapper {
+                padding-left: 0;
+            }
+
+            .main-content {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .content-container {
+                border-radius: 8px;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+                padding: 1.25rem;
+            }
+
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .page-header h1 i {
+                width: 28px;
+                height: 28px;
+            }
+
+            .table-container {
+                padding: 1.25rem;
+            }
+
+            .penjualan-table {
+                min-width: 800px;
+            }
+
+            .btn-generate {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

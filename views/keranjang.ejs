@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keranjang Belanja</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="keranjang-body">
+    <%- include('layout/header', { title: 'Keranjang Belanja', bodyClass: 'keranjang-body' }) %>
+    <%- include('layout/sidebar') %>
+    <div class="content-container">
+        <h1><i data-lucide="shopping-cart"></i> Keranjang Belanja</h1>
+        
+        <% if (items.length === 0) { %>
+            <p class="empty-cart"><i data-lucide="shopping-bag"></i> Keranjang belanja Anda kosong</p>
+        <% } else { %>
+            <table class="keranjang-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Produk</th>
+                        <th>Harga</th>
+                        <th>Jumlah</th>
+                        <th>Total</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% items.forEach((item, index) => { %>
+                        <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%= item.produk_id.namaProduk %></td>
+                            <td>Rp <%= item.produk_id.harga.toLocaleString() %></td>
+                            <td>
+                                <div class="jumlah-control">
+                                    <button onclick="updateJumlah('<%= item._id %>', '<%= item.jumlah - 1 %>')" <%= item.jumlah <= 1 ? 'disabled' : '' %>>
+                                        <i data-lucide="minus-circle"></i>
+                                    </button>
+                                    <span><%= item.jumlah %></span>
+                                    <button onclick="updateJumlah('<%= item._id %>', '<%= item.jumlah + 1 %>')" <%= item.jumlah >= item.produk_id.stok ? 'disabled' : '' %>>
+                                        <i data-lucide="plus-circle"></i>
+                                    </button>
+                                </div>
+                            </td>
+                            <td>Rp <%= (item.produk_id.harga * item.jumlah).toLocaleString() %></td>
+                            <td>
+                                <button onclick="hapusItem('<%= item._id %>')" class="btn-hapus">
+                                    <i data-lucide="trash-2"></i> Hapus
+                                </button>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4" class="text-right"><strong>Total Belanja:</strong></td>
+                        <td colspan="2"><strong>Rp <%= totalHarga.toLocaleString() %></strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="checkout-container">
+                <button onclick="checkout()" class="btn-checkout">
+                    <i data-lucide="credit-card"></i> Checkout
+                </button>
+            </div>
+        <% } %>
+    </div>
+
+    <style>
+        .content-container h1 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .empty-cart {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+            color: #666;
+            margin: 2rem 0;
+        }
+
+        .jumlah-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f8f9fa;
+            padding: 0.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .jumlah-control button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .jumlah-control button:first-child {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .jumlah-control button:last-child {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        .jumlah-control button:first-child:hover:not(:disabled) {
+            background: #fecaca;
+            transform: scale(1.05);
+        }
+
+        .jumlah-control button:last-child:hover:not(:disabled) {
+            background: #bbf7d0;
+            transform: scale(1.05);
+        }
+
+        .jumlah-control button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .jumlah-control button i {
+            width: 18px;
+            height: 18px;
+        }
+
+        .jumlah-control span {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 600;
+            color: #1e293b;
+            background: white;
+            padding: 0.5rem;
+            border-radius: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .keranjang-table td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+
+        .keranjang-table tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .btn-hapus {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            background: #dc3545;
+            color: white;
+            cursor: pointer;
+        }
+
+        .btn-hapus i {
+            width: 16px;
+            height: 16px;
+        }
+
+        .btn-checkout {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 4px;
+            background: #28a745;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        .btn-checkout i {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        async function updateJumlah(itemId, jumlah) {
+            try {
+                const response = await fetch(`/keranjang/update/${itemId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ jumlah })
+                });
+
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    const error = await response.text();
+                    showError(error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('Terjadi kesalahan saat mengupdate jumlah');
+            }
+        }
+
+        async function hapusItem(itemId) {
+            const result = await showConfirmation(
+                'Hapus Item',
+                'Apakah Anda yakin ingin menghapus item ini dari keranjang?'
+            );
+
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch(`/keranjang/delete/${itemId}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (response.ok) {
+                        showSuccess('Item berhasil dihapus');
+                        setTimeout(() => location.reload(), 1000);
+                    } else {
+                        showError('Gagal menghapus item');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showError('Terjadi kesalahan saat menghapus item');
+                }
+            }
+        }
+
+        async function checkout() {
+            const result = await showConfirmation(
+                'Checkout',
+                'Apakah Anda yakin ingin melakukan checkout?'
+            );
+
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch('/keranjang/checkout', {
+                        method: 'POST'
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        window.location.href = `/payment-receipt/${data.orderId}`;
+                    } else {
+                        const error = await response.text();
+                        showError(error);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showError('Terjadi kesalahan saat checkout');
+                }
+            }
+        }
+    </script>
+</body>
+</html> 
